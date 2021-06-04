@@ -1,0 +1,33 @@
+package org.knowm.xchange.okcoin;
+
+import org.knowm.xchange.BaseExchange;
+import org.knowm.xchange.ExchangeSpecification;
+import org.knowm.xchange.exceptions.ExchangeException;
+import org.knowm.xchange.okcoin.v5.service.OkexMarketDataService;
+import org.knowm.xchange.okcoin.v5.service.OkexTradeService;
+
+import si.mazi.rescu.SynchronizedValueFactory;
+
+public class OkexExchangeV5 extends BaseExchange {
+
+  @Override
+  protected void initServices() {
+    this.marketDataService = new OkexMarketDataService(this);
+    this.tradeService = new OkexTradeService(this);
+  }
+
+  @Override
+  public ExchangeSpecification getDefaultExchangeSpecification() {
+    ExchangeSpecification spec = new ExchangeSpecification(this.getClass());
+    spec.setSslUri("https://www.okex.com");
+    spec.setHost("www.okex.com");
+    spec.setExchangeName("OKEx");
+    spec.setExchangeDescription("OKEx is a globally oriented crypto-currency trading platform.");
+    return spec;
+  }
+
+  @Override
+  public SynchronizedValueFactory<Long> getNonceFactory() {
+    throw new ExchangeException("Nonce value not supported at OKEx.");
+  }
+}
